@@ -11,6 +11,7 @@ import {
     ScrollView,
     StatusBar,
     Alert,
+    ToastAndroid
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -57,6 +58,11 @@ constructor(){
           if(this.state.username && this.state.email){
              if(this.state.password==this.state.confirm_password){
                  if(this.state.mobile.length==10){
+                    ToastAndroid.showWithGravity(
+                        "Registering",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                      );
                    fetch('https://maharaj-3.herokuapp.com/api/v1/auth/register',{
                     method:"POST",
                     body:JSON.stringify({
@@ -83,7 +89,8 @@ constructor(){
                     }
             })
             .catch((error) =>{
-                this.props.navigation.navigate('Verify')
+                console.log(error)
+//                this.props.navigation.navigate('Verify')
             })
         }
         else{

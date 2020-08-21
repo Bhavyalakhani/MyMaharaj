@@ -64,9 +64,11 @@ export default class LoginScreen extends React.Component{
                 AsyncStorage.setItem('token',this.state.token)
                 this.props.navigation.navigate('Main')
                 console.warn(this.state.token)
-            Alert.alert("Please enter the OTP")
 
         })
+        }
+        else{
+            Alert.alert("Please enter the OTP")
         }
     }
  

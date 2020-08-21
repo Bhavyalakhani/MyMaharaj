@@ -64,8 +64,9 @@ constructor(){
           if(this.state.username && this.state.email){
              if(this.state.password==this.state.confirm_password){
                  if(this.state.mobile.length==10){
+                     console.log(this.state.cuisine)
                  console.warn('authentication underway')
-                   await  fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/register",{
+                    fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/register",{
                     method:"POST",
                     body:JSON.stringify({
                         name:this.state.username,
@@ -80,23 +81,25 @@ constructor(){
                         cuisine:this.state.cuisine,
                         role:"maharaj"                       
                     }),
-                    redirect:'follow',
                     headers:{
                         "Content-Type":"application/json"
                     }
                 })
                 .then((response) => response.json())
+                
                 .then((data) =>{
                     if(data.success){
                         console.warn(data.token)
                         this.setState({token:data.token})
                         let x=''
                         x=this.props.navigation.getParam('admin')
+                        console.log(x)
                         this.props.navigation.navigate('Verify',{'admin':x})
                         console.warn('verify page')
                     }
                     else{
-                        Alert.alert('Login fail',data)
+                        console.log(data)
+                        Alert.alert('Login fail',data.success)
                     }
             })
             .catch((error) =>{
@@ -204,7 +207,7 @@ constructor(){
                     multiple={true}
                     multipleText={this.state.cuisine.toString()}
                     min={0}
-                    max={3}
+                    max={6}
                 />
                 </View>
             <Text style={[styles.text_footer,{marginTop:35}]}>Address</Text>
