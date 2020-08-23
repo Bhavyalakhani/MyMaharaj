@@ -84,8 +84,8 @@ constructor(){
                     if(data.success){
                         this.props.navigation.navigate('Verify')
                     }
-                    else{
-                        Alert.alert('Login fail',response.message.success)
+                    else{                        
+                        Alert.alert('Email or Phone number taken')
                     }
             })
             .catch((error) =>{

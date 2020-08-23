@@ -99,11 +99,11 @@ constructor(){
                     }
                     else{
                         console.log(data)
-                        Alert.alert('Login fail',data.success)
+                        Alert.alert('Email or Phone number taken')
                     }
             })
             .catch((error) =>{
-                Alert.alert(error.message)
+                Alert.alert(error)
             })
         }
         else{
