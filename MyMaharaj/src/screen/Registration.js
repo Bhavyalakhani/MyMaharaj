@@ -18,7 +18,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import  AsyncStorage from "@react-native-community/async-storage"
-import axios from 'axios'
 
 export default class Registration extends Component {
 
@@ -55,9 +54,12 @@ constructor(){
         });
     }
       signup =  () => {
+        var letters = /^[A-Za-z]+$/;
+        var numbers = /^[0-9]+$/;
           if(this.state.username && this.state.email){
-             if(this.state.password==this.state.confirm_password){
-                 if(this.state.mobile.length==10){
+             if(this.state.password==this.state.confirm_password && this.state.password.length>4){
+                 if(this.state.mobile.length==10 && this.state.mobile.match(numbers)){
+                     if(this.state.city.match(letters)){
                     ToastAndroid.showWithGravity(
                         "Registering",
                         ToastAndroid.SHORT,
@@ -94,11 +96,15 @@ constructor(){
             })
         }
         else{
+            Alert.alert("Enter an appropriate City Name")
+        }
+    }
+        else{
             Alert.alert('Not a valid Number')
         }
             }
             else{
-                Alert.alert("Passwords dont match")
+                Alert.alert("Passwords dont match or length of the password is less than 4")
             }
         }
         else{
