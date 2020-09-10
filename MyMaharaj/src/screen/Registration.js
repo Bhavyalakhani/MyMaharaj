@@ -11,13 +11,13 @@ import {
     ScrollView,
     StatusBar,
     Alert,
+    ToastAndroid
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import  AsyncStorage from "@react-native-community/async-storage"
-import axios from 'axios'
 
 export default class Registration extends Component {
 
@@ -54,9 +54,17 @@ constructor(){
         });
     }
       signup =  () => {
+        var letters = /^[A-Za-z]+$/;
+        var numbers = /^[0-9]+$/;
           if(this.state.username && this.state.email){
-             if(this.state.password==this.state.confirm_password){
-                 if(this.state.mobile.length==10){
+             if(this.state.password==this.state.confirm_password && this.state.password.length>4){
+                 if(this.state.mobile.length==10 && this.state.mobile.match(numbers)){
+                     if(this.state.city.match(letters)){
+                    ToastAndroid.showWithGravity(
+                        "Registering",
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER
+                      );
                    fetch('https://maharaj-3.herokuapp.com/api/v1/auth/register',{
                     method:"POST",
                     body:JSON.stringify({
@@ -78,20 +86,25 @@ constructor(){
                     if(data.success){
                         this.props.navigation.navigate('Verify')
                     }
-                    else{
-                        Alert.alert('Login fail',response.message.success)
+                    else{                        
+                        Alert.alert('Email or Phone number taken')
                     }
             })
             .catch((error) =>{
-                this.props.navigation.navigate('Verify')
+                console.log(error)
+//                this.props.navigation.navigate('Verify')
             })
         }
+        else{
+            Alert.alert("Enter an appropriate City Name")
+        }
+    }
         else{
             Alert.alert('Not a valid Number')
         }
             }
             else{
-                Alert.alert("Passwords dont match")
+                Alert.alert("Passwords dont match or length of the password is less than 4")
             }
         }
         else{

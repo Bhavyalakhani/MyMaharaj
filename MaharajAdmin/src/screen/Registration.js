@@ -10,7 +10,7 @@ import {
     Platform,
     StyleSheet,
     ScrollView,
-
+    ToastAndroid,
     StatusBar,
     Alert,
 } from 'react-native';
@@ -61,54 +61,74 @@ constructor(){
         });
     }
       signup = async () => {
+          var numbers = /^[0-9]+$/;
+          var letters = /^[A-Za-z]+$/;
           if(this.state.username && this.state.email){
-             if(this.state.password==this.state.confirm_password){
+             if(this.state.password==this.state.confirm_password && this.state.password.length>3 && this.state.mobile.match(numbers)){
                  if(this.state.mobile.length==10){
-                 console.warn('authentication underway')
-                   await  fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/register",{
-                    method:"POST",
-                    body:JSON.stringify({
-                        name:this.state.username,
-                        email:this.state.email,
-                        password:this.state.password,
-                        mobile:this.state.mobile,
-                        zipcode:this.state.zipcode,
-                        yearsOfExp:Number(this.state.yearsOfExp),
-                        kin:this.state.kin,
-                        address:this.state.address,
-                        city:this.state.city,
-                        cuisine:this.state.cuisine,
-                        role:"maharaj"                       
-                    }),
-                    redirect:'follow',
-                    headers:{
-                        "Content-Type":"application/json"
-                    }
-                })
-                .then((response) => response.json())
-                .then((data) =>{
-                    if(data.success){
-                        console.warn(data.token)
-                        this.setState({token:data.token})
-                        let x=''
-                        x=this.props.navigation.getParam('admin')
-                        this.props.navigation.navigate('Verify',{'admin':x})
-                        console.warn('verify page')
-                    }
-                    else{
-                        Alert.alert('Login fail',data)
-                    }
-            })
-            .catch((error) =>{
-                Alert.alert(error.message)
-            })
+                     if( this.state.city.match(letters) && this.state.cuisine[0]){
+                         if(this.state.zipcode.match(numbers)  && this.state.yearsOfExp.match(numbers) && this.state.kin.match(number)){
+                            ToastAndroid.showWithGravity(
+                                "Registering",
+                                ToastAndroid.SHORT,
+                                ToastAndroid.CENTER
+                              );
+                                console.log(this.state.cuisine)
+                            console.warn('authentication underway')
+                                fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/register",{
+                                method:"POST",
+                                body:JSON.stringify({
+                                    name:this.state.username,
+                                    email:this.state.email,
+                                    password:this.state.password,
+                                    mobile:this.state.mobile,
+                                    zipcode:this.state.zipcode,
+                                    yearsOfExp:Number(this.state.yearsOfExp),
+                                    kin:this.state.kin,
+                                    address:this.state.address,
+                                    city:this.state.city,
+                                    cuisine:this.state.cuisine,
+                                    role:"maharaj"                       
+                                }),
+                                headers:{
+                                    "Content-Type":"application/json"
+                                }
+                            })
+                            .then((response) => response.json())
+                            
+                            .then((data) =>{
+                                if(data.success){
+                                    console.warn(data.token)
+                                    this.setState({token:data.token})
+                                    let x=''
+                                    x=this.props.navigation.getParam('admin')
+                                    console.log(x)
+                                    this.props.navigation.navigate('Verify',{'admin':x})
+                                    console.warn('verify page')
+                                }
+                                else{
+                                    console.log(data)
+                                    Alert.alert('Email or Phone number taken')
+                                }
+                        })
+                        .catch((error) =>{
+                            Alert.alert(error)
+                        })
         }
         else{
-            Alert.alert('Not a valid number')
+            Alert.alert("Zipcode,Years of experience and Kin accepts only Numericals")
+        }
+    }
+        else{
+            Alert.alert("City Only accepts Alphabets/Cuisine Missing")
+        }
+    }
+        else{
+            Alert.alert('Number should be 10 digits or Enter Numbers only')
         }
             }
             else{
-                Alert.alert("Passwords dont match")
+                Alert.alert("Passwords dont match or password too short")
             }
         }
         else{
@@ -204,7 +224,7 @@ constructor(){
                     multiple={true}
                     multipleText={this.state.cuisine.toString()}
                     min={0}
-                    max={3}
+                    max={6}
                 />
                 </View>
             <Text style={[styles.text_footer,{marginTop:35}]}>Address</Text>
