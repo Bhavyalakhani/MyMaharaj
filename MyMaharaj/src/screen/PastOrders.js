@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, ImageBackground , Image, View , TouchableOpacity , FlatList } from 'react-native';
+import { Text, StyleSheet, ImageBackground , Image, View , TouchableOpacity , FlatList  } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment'
@@ -42,13 +42,12 @@ export default class PastOrders extends React.Component{
                 response.json()
             
         ).then((data) =>{
-            console.log(data.data)
+            console.log(data,data)
             this.setState({data : data.data})
         })
     }
     componentDidMount= async() => {
             
-            this.getloc()
             this.getOrder()
             this.focusListner = this.props.navigation.addListener('didFocus' , () =>{
                 this.onFocusFunction()
@@ -63,15 +62,23 @@ export default class PastOrders extends React.Component{
 render(){
     return(
         <View style = {style.container}>
-            <Text style = {{margin:18,fontSize:30 , fontWeight:'bold',marginBottom:10}}>Past / Completed Orders</Text>
-            
+            <View style={{backgroundColor:'black'}}>
+            <Text style = {{margin:18,fontSize:20 , fontWeight:'bold',marginBottom:10,color:'white'}}>Past / Completed Orders</Text>
+            </View>
+        {this.state.data.toString() == "" ? 
+            <View style={{justifyContent:'center',flex:1}}>
+                <Image source ={require('../images/hat.png')} style ={{height:200 , width:200 , justifyContent:'center',alignSelf:'center'}}/>
+                <Text style={style.Company}>
+                MyMaharaj Inc.
+            </Text>
+            </View>
+                :
             <FlatList
              data={this.state.data.reverse()}
              renderItem ={ ({ item, index }) =>
-            
-            
             <TouchableOpacity style={style.box} onPress={() => {this.props.navigation.navigate('Details',{'details':item})}}>
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{ flexDirection: 'column' , alignItems:"center"}}>
+                <Image source ={require('../images/hat.png')} style ={{height:70 , width:100 }}/>
                     <Text style={style.boxText2 }>REQUEST ID: {item._id} </Text>
                     <Text style={style.boxText2}>Date of Booking: {`${[item.bookingDate].toLocaleString().slice(8,10)}/${[item.bookingDate].toLocaleString().slice(5,7)}/${[item.bookingDate].toLocaleString().slice(0,4)}`} </Text>
                     <Text style={style.boxText2}>Time of Booking : {moment(item.bookingTime,"hh:mm").format("h:mm A")}</Text>
@@ -81,8 +88,7 @@ render(){
             
              }
             />
-            
-            
+        }
         </View>
 )}
 }
@@ -116,17 +122,23 @@ const style = StyleSheet.create({
     },
     boxText: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         
 
     },
     boxText2: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         marginBottom:0
 
-    }
+    },
+    Company :{
+        alignSelf:'center',
+        marginBottom:20,
+        fontWeight:"400",
+        fontSize:25,
+    },
 
 })

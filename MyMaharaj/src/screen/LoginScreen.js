@@ -72,7 +72,7 @@ export default class LoginScreen extends React.Component{
                         this.props.navigation.navigate('Verify')
                     }
                     else{
-                        Alert.alert("Login failed.Enter the valid OTP")
+                        Alert.alert(data.toString())
                     }
                 }
             })
@@ -93,7 +93,9 @@ export default class LoginScreen extends React.Component{
 render(){
     return(
         <View style = {style.container}>
-            <Text style = {{fontSize:40 , alignItems:'center' , alignSelf:'center' , fontWeight:'bold' , marginTop:100 , marginBottom:100}}>User Login</Text>
+            <Image source ={require('../images/hat.png')} style ={{height:150 , width:150 , alignSelf:'center' }}/>
+
+            <Text style = {{fontSize:40 , alignItems:'center' , alignSelf:'center' , fontWeight:'bold' , marginBottom:50}}>User Login</Text>
             
             <View style = {{flexDirection:'row' ,  borderWidth:1 , marginLeft:50, marginRight:50 , borderColor:'grey' , borderRadius:10}}>
             <Text style={style.text}>+91</Text>

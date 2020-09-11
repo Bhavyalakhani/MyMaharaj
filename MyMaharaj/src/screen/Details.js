@@ -77,8 +77,9 @@ class Details extends Component {
         else {
             return (
                 <ScrollView>
-                    
+
                         <Text style={{ margin: 18, fontSize: 30, fontWeight: 'bold', marginBottom: 10 }}>Details</Text>
+                        
                         <FlatList
                             data={this.state.details}
                             keyExtractor={(item, index) => item._id}

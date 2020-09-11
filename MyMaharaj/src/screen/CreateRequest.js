@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, ImageBackground, Image, View, TextInput, TouchableOpacity ,ScrollView } from 'react-native';
+import { Text, StyleSheet, ImageBackground, Image, View, TextInput, TouchableOpacity ,ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -26,7 +26,8 @@ export default class CreateRequest extends React.Component {
             priceMax:'',
             Flat_no:'',
             Wing:'',
-            Multiplier:0
+            Multiplier:0,
+            building:''
         }
     }
     componentDidMount = async() => {
@@ -40,7 +41,7 @@ export default class CreateRequest extends React.Component {
                 longLat : loc.long_lat
             }) :
             this.setState({
-                location : 'Please add your location'
+                location : ''
             })
     }
 
@@ -85,6 +86,9 @@ export default class CreateRequest extends React.Component {
     sendRequest = async() =>{
         let token = await AsyncStorage.getItem('token')
         console.log(token)
+        if( this.state.type_of_booking && this.state.Cuisine && this.state.bookingQuantity && this.state.time && this.state.type_of_meal && this.state.location)
+        {
+        Alert.alert("Added your request")
         fetch('https://maharaj-3.herokuapp.com/api/v1/req/create',
         {
             method:"POST",
@@ -99,7 +103,7 @@ export default class CreateRequest extends React.Component {
                 "cuisine": this.state.Cuisine.toString(),
                 "priceLow": this.state.priceLow.toString(),
                 "priceMax": this.state.priceMax.toString(),
-                "address": this.state.Flat_no + " " + this.state.Wing + " Wing " +  this.state.location,
+                "address": this.state.Flat_no + " " + this.state.Wing +  this.state.building +  this.state.location,
                 "bookingDate": this.state.date,
                 "bookingTime": this.state.time,
                 "location": {
@@ -122,6 +126,10 @@ export default class CreateRequest extends React.Component {
                 this.props.navigation.navigate('CurrentOrder')
             )
         })
+        }
+        else {
+            Alert.alert("Please fill all the fields")
+        }
     }
 
     render() {
@@ -232,6 +240,7 @@ export default class CreateRequest extends React.Component {
                 
                 </View>
                 <Text style = {style.text}>Address Details</Text>
+                
                 <View style={{flexDirection:'row' , justifyContent:'center' ,marginTop:15}}>
                 <TextInput
                 keyboardType={'ascii-capable'}
@@ -250,8 +259,16 @@ export default class CreateRequest extends React.Component {
                         style={style.textinput2}
                 ></TextInput>
                 </View>
+                <TextInput
+                keyboardType={'ascii-capable'}
+                        placeholder='Buiding Name'
+                        onChangeText={(text) => this.setState({
+                            building:text
+                        })}
+                        style={style.textinput2}
+                ></TextInput>
                 <View >
-                <Text style={style.textinput3}>{this.state.location}</Text>
+                <Text style={style.textinput3}>{this.state.location ? this.state.location : "Please add your location"}</Text>
                 </View>
                 <Text style={{marginLeft:20,color:'red' , fontSize:15}}>*To change address please go to home screen</Text>
                 <TouchableOpacity style={{alignSelf:'center' , backgroundColor:'#000' , marginVertical:30 , borderRadius:10}} onPress={() => this.sendRequest()} >
@@ -304,8 +321,9 @@ const style = StyleSheet.create({
         borderRadius:10,
         marginHorizontal:20,
         alignSelf:'center',
-        width:120,
-        backgroundColor:"#fff"
+        backgroundColor:"#fff",
+        marginVertical:10,
+        width:160
     },
     textinput3: {
         fontSize: 20,

@@ -67,19 +67,32 @@ render(){
             <TouchableOpacity style = {{ backgroundColor:'#000'  , justifyContent:'center' ,paddingTop:18}} onPress={() => this.props.navigation.navigate('Location')}>
                 <Text style ={{fontSize:15 , color:'#fff' , paddingLeft:10 ,}}>Deliver to </Text>
                 <View style ={{flexDirection:'row' , }}>
+                <Icon name = "location-arrow" size = {20} color = {'#fff'} style={{paddingTop:5,paddingLeft:10 }}/>
                     <Text style = {{fontSize : 18 ,color :'#fff' , fontWeight:'bold' , marginLeft:10 , marginVertical:10, borderBottomWidth:1 ,borderBottomColor:'#fff',marginTop:0}}>{this.state.location}</Text>
-                    <Icon name = "chevron-down" size = {15} color = {'#fff'} style={{paddingTop:5,paddingLeft:30 , marginRight:100}}/>
                 </View>
             </TouchableOpacity>
-            <Text style = {{margin:18,fontSize:30 , fontWeight:'bold',marginBottom:10}}>Current Orders</Text>
-            
+            <Text style = {{margin:18,fontSize:20 , fontWeight:'bold',marginBottom:10}}>Current Orders</Text>
+            {
+                this.state.data.toString() === "" ?
+                <View style={{justifyContent:'center',flex:1}}>
+                <Image source ={require('../images/hat.png')} style ={{height:200 , width:200 , justifyContent:'center',alignSelf:'center'}}/>
+                <Text style={style.Company}>
+                MyMaharaj Inc.
+            </Text>
+            <Text style={{fontSize:20,alignSelf:'center'}}>
+                 Press plus "+" to create a new request
+            </Text>
+            </View>
+            :
+                
             <FlatList
              data={this.state.data.reverse()}
              renderItem ={ ({ item, index }) =>
             
             
             <TouchableOpacity style={style.box} onPress={() => {this.props.navigation.navigate('Details',{'details':item})}}>
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{ flexDirection: 'column' , alignItems:"center"}}>
+                <Image source ={require('../images/hat.png')} style ={{height:70 , width:100 }}/>
                     <Text style={style.boxText2 }>REQUEST ID: {item._id} </Text>
                     <Text style={style.boxText2}>Date of Booking: {`${[item.bookingDate].toLocaleString().slice(8,10)}/${[item.bookingDate].toLocaleString().slice(5,7)}/${[item.bookingDate].toLocaleString().slice(0,4)}`} </Text>
                     <Text style={style.boxText2}>Time of Booking : {moment(item.bookingTime,"hh:mm").format("h:mm A")}</Text>
@@ -89,13 +102,13 @@ render(){
             
              }
             />
-            
+            }
             <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => this.props.navigation.navigate('CreateRequest')}
           style={style.TouchableOpacityStyle}>
           {/* <Icon name = 'plus' size = {40} color = '#fff'/> */}
-            <Text style ={{color:'#fff' , fontSize:60 , paddingBottom:10}}>+</Text>
+            <Text style ={{color:'#fff' , fontSize:50 , paddingBottom:10}}>+</Text>
         </TouchableOpacity>
         </View>
 )}
@@ -119,7 +132,7 @@ const style = StyleSheet.create({
         right: 30,
         bottom: 30,
         backgroundColor:'#000',
-        borderRadius:70
+        borderRadius:60
       },
     
       box: {
@@ -130,17 +143,23 @@ const style = StyleSheet.create({
     },
     boxText: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         
 
     },
     boxText2: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         marginBottom:0
 
-    }
+    },
+    Company :{
+        alignSelf:'center',
+        marginBottom:20,
+        fontWeight:"400",
+        fontSize:25,
+    },
 
 })
