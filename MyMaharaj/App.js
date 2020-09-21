@@ -18,7 +18,7 @@ import Verify from './src/screen/Verify'
 import ModifyRequest from './src/screen/ModifyRequest';
 import ContactUs from './src/screen/ContactUs';
 import Location from './src/screen/Location'
-
+import Maps from './src/screen/Maps'
 export default class App extends React.Component {
   
   render() {
@@ -125,4 +125,4 @@ const Base = createSwitchNavigator({
 
 
 
-const AppContainer = createAppContainer(Base)
+const AppContainer = createAppContainer(Base);

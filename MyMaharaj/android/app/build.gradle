@@ -185,7 +185,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    implementation project(':react-native-maps')
+    compile project(':react-native-android-location-enabler')
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     compile 'com.android.support:multidex:1.0.1'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
