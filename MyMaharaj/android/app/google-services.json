@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "18808711252",
+    "firebase_url": "https://maharaj-9daa2.firebaseio.com",
+    "project_id": "maharaj-9daa2",
+    "storage_bucket": "maharaj-9daa2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18808711252:android:1dfcda13454421ac7865c1",
+        "android_client_info": {
+          "package_name": "com.mymaharaj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18808711252-gncrrs8e681djtecvc25b4a4e5hcub7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mymaharaj",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "18808711252-laha1dpbj56ar05nis62englao19ejhq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Oe7FA3-mj6SPQAilQ0Pe44J5BkSp-j8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18808711252-laha1dpbj56ar05nis62englao19ejhq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

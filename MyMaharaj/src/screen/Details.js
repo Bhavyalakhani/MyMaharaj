@@ -99,8 +99,8 @@ class Details extends Component {
                                             <Text style={style.boxText2}>Amount : {item.priceLow} </Text>
                                         </View>
                                         :
-                                        this.state.visible ?
-                                            item.acceptedBy ?
+                                        item.acceptedBy ?
+                                            this.state.visible ?
                                                 <View>
                                                     <Text style={style.boxText2}>Low price : {item.priceLow} </Text>
                                                     <Text style={style.boxText2}>Max price : {item.priceMax} </Text>
@@ -117,9 +117,7 @@ class Details extends Component {
                                                     </View>
                                                 </View>
                                                 :
-                                                null
-                                            :
-                                            item.modified ?
+                                                item.modified ?
                                                     <View>
                                                         <Text style={style.boxText2}>Low price : {item.priceLow} </Text>
                                                         <Text style={style.boxText2}>Max price : {item.priceMax} </Text>
@@ -134,6 +132,15 @@ class Details extends Component {
                                                         <Text style={[style.boxText, { color: '#fff', backgroundColor: '#000', padding: 15, borderRadius: 10, fontWeight: 'bold', paddingHorizontal: 40, marginTop: 50 }]}>Edit</Text>
                                                     </TouchableOpacity>
                                                 </View>
+                                            :
+                                            moment(new Date).isAfter(item.bookingDate) ?
+                                            <View>
+                                                        <Text style={[style.boxText2, { fontWeight: 'bold', fontSize: 22 }]}>Order wasnt accepted by any maharaj</Text>
+                                            </View>
+                                            :
+                                            null
+
+                                            
                                     }
 
                                 </View>

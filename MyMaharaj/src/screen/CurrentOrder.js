@@ -44,7 +44,12 @@ export default class CurrentOrder extends React.Component{
             
         ).then((data) =>{
             console.log(data.data)
-            this.setState({data : data.data})
+            const result = data.data.map((d) => {
+               return moment(new Date).isBefore(d.bookingDate) ? d : null 
+            }).filter( d => d !== null)
+            console.log("Current Order =>")
+            console.log(result)
+            this.setState({data : result})
         })
     }
     componentDidMount= async() => {
@@ -74,13 +79,10 @@ render(){
             <Text style = {{margin:18,fontSize:20 , fontWeight:'bold',marginBottom:10}}>Current Orders</Text>
             {
                 this.state.data.toString() === "" ?
-                <View style={{justifyContent:'center',flex:1}}>
+                <View style={{justifyContent:'center',flex:1 , paddingBottom:100}}>
                 <Image source ={require('../images/hat.png')} style ={{height:200 , width:200 , justifyContent:'center',alignSelf:'center'}}/>
                 <Text style={style.Company}>
                 MyMaharaj Inc.
-            </Text>
-            <Text style={{fontSize:20,alignSelf:'center'}}>
-                 Press plus "+" to create a new request
             </Text>
             </View>
             :
@@ -108,7 +110,7 @@ render(){
           onPress={() => this.props.navigation.navigate('CreateRequest')}
           style={style.TouchableOpacityStyle}>
           {/* <Icon name = 'plus' size = {40} color = '#fff'/> */}
-            <Text style ={{color:'#fff' , fontSize:50 , paddingBottom:10}}>+</Text>
+            <Text style ={{color:'#fff' , fontSize:20 , paddingBottom:10, paddingHorizontal :10,paddingTop:10}}>{"Create new Request"}</Text>
         </TouchableOpacity>
         </View>
 )}
@@ -125,14 +127,12 @@ const style = StyleSheet.create({
     } ,
     TouchableOpacityStyle: {
         position: 'absolute',
-        width: 70,
-        height: 70,
         alignItems: 'center',
         justifyContent: 'center',
-        right: 30,
+        right: 15,
         bottom: 30,
         backgroundColor:'#000',
-        borderRadius:60
+        borderRadius:10
       },
     
       box: {

@@ -103,7 +103,7 @@ export default class CreateRequest extends React.Component {
                 "cuisine": this.state.Cuisine.toString(),
                 "priceLow": this.state.priceLow.toString(),
                 "priceMax": this.state.priceMax.toString(),
-                "address": this.state.Flat_no + " " + this.state.Wing +  this.state.building +  this.state.location,
+                "address": this.state.Flat_no + " " + this.state.Wing +" "+  this.state.building +" "+  this.state.location,
                 "bookingDate": this.state.date,
                 "bookingTime": this.state.time,
                 "location": {
@@ -207,6 +207,7 @@ export default class CreateRequest extends React.Component {
                         { label: 'Rajasthani ' , value:'Rajasthani '},
                         { label: 'Chinese' , value:'Chinese'},
                         { label: 'Continental' , value:'Continental'},
+                        { label: 'Gujurati' , value:'Gujurati'},
                     ]}
                     placeholder = 'Cuisine'
                     containerStyle={{ height: 50 }}

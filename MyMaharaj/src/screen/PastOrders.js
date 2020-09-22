@@ -31,6 +31,7 @@ export default class PastOrders extends React.Component{
     getOrder = async() =>{
         let token = await AsyncStorage.getItem('token')
             console.log(token)
+            this.state.data = []
             fetch('https://maharaj-3.herokuapp.com/api/v1/req/past',
             {
                 method:'GET',
@@ -42,8 +43,28 @@ export default class PastOrders extends React.Component{
                 response.json()
             
         ).then((data) =>{
-            console.log(data,data)
-            this.setState({data : data.data})
+            console.log(data.data)
+            this.state.data.push(...data.data)
+        }).then(() => {
+            fetch('https://maharaj-3.herokuapp.com/api/v1/req/ongoing',
+            {
+                method:'GET',
+                headers:{
+                    "Authorization":token,
+                    "Content-Type":"application/json"
+                }
+            }, ).then((response) => 
+                response.json()
+            
+        ).then((data1) =>{
+            const result = data1.data.map((d) => {
+              return moment(new Date).isBefore(d.bookingDate) ? null : d
+            }).filter(d => d !== null)
+            this.state.data.push(...result)
+            console.log("Past Order => ")
+            console.log(this.state.data)
+            this.setState({data : this.state.data})
+        })
         })
     }
     componentDidMount= async() => {
@@ -82,7 +103,7 @@ render(){
                     <Text style={style.boxText2 }>REQUEST ID: {item._id} </Text>
                     <Text style={style.boxText2}>Date of Booking: {`${[item.bookingDate].toLocaleString().slice(8,10)}/${[item.bookingDate].toLocaleString().slice(5,7)}/${[item.bookingDate].toLocaleString().slice(0,4)}`} </Text>
                     <Text style={style.boxText2}>Time of Booking : {moment(item.bookingTime,"hh:mm").format("h:mm A")}</Text>
-                    <Text style={style.boxText}>Status : {item.status}</Text>
+                    <Text style={style.boxText}>Status : {item.status === "ongoing" ? "Order Not completed" : item.status}</Text>
                 </View>
             </TouchableOpacity>
             
