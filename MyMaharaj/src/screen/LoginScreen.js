@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, ImageBackground , Image, View , TextInput , TouchableOpacity,LayoutAnimation,UIManager, Alert} from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage"
-import axios from "axios"
+import OneSignal from 'react-native-onesignal'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -16,11 +16,25 @@ export default class LoginScreen extends React.Component{
             OTP : true,
             tokens:"",
             mobile:"",
-            OTP_value:""
+            OTP_value:"",
+            SignalId : ""
 
 
         }
     }
+    componentDidMount(){
+     OneSignal.addEventListener('ids', this.onIds);
+    }
+
+    componentWillUnmount(){
+      OneSignal.removeEventListener('ids', this.onIds);
+    }
+
+    onIds = (device) => {
+        this.state.SignalId = device.userId
+        console.log('Device info: ', this.state.SignalId);
+
+      }
     sendotp =async ()=>{                                                                //fetching the send sms api and handling with errors 
         if(this.state.mobile){
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -60,12 +74,25 @@ export default class LoginScreen extends React.Component{
             })
             .then((response) =>response.json())
             .then((data) =>{
-                console.warn(data)
+                console.log(data)
                 if(data.success){
                     this.setState({tokens:data.token})
+                    console.log(data.sendUser._id)
                     AsyncStorage.setItem('token',this.state.tokens)
-                    console.warn(this.state.tokens)
-                    this.props.navigation.navigate('Main')
+                    fetch("https://maharaj-3.herokuapp.com/api/v1/auth/updateSignal/"+data.sendUser._id,{
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+                        ,
+                        body:JSON.stringify({
+                            "signal" : this.state.SignalId
+                        })
+                    }).then((response) => response.json()).then((data) => {
+                        console.log(data)
+                        this.props.navigation.navigate('Main')
+                    })
+                    
                 }
                 else{
                     if(data == "Number Not Verified"){
@@ -78,7 +105,7 @@ export default class LoginScreen extends React.Component{
             })
             .catch((error) =>{
             
-                Alert.alert(error)
+                Alert.alert(error.error)
             });
 
         }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet, ImageBackground , Image, View , TouchableOpacity , FlatList } from 'react-native';
+import { Text, StyleSheet, ImageBackground , Image, View , TouchableOpacity , FlatList, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment'
+import {Notification} from '../notification/notification'
 
 export default class CurrentOrder extends React.Component{
     constructor(props){
@@ -28,6 +29,7 @@ export default class CurrentOrder extends React.Component{
                 location : 'Please add your location'
             })
     }
+    
     getOrder = async() =>{
         let token = await AsyncStorage.getItem('token')
             
@@ -69,7 +71,7 @@ export default class CurrentOrder extends React.Component{
 render(){
     return(
         <View style = {style.container}>
-            <TouchableOpacity style = {{ backgroundColor:'#000'  , justifyContent:'center' ,paddingTop:18}} onPress={() => this.props.navigation.navigate('Location')}>
+            <TouchableOpacity style = {{ backgroundColor:'#000'  , justifyContent:'center' ,paddingTop:10}} onPress={() => this.props.navigation.navigate('Location')}>
                 <Text style ={{fontSize:15 , color:'#fff' , paddingLeft:10 ,}}>Deliver to </Text>
                 <View style ={{flexDirection:'row' , }}>
                 <Icon name = "location-arrow" size = {20} color = {'#fff'} style={{paddingTop:5,paddingLeft:10 }}/>

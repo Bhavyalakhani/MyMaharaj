@@ -13,21 +13,9 @@ export default class Profile extends React.Component{
         }
     }
     onFocusFunction = async() =>{
-        this.getloc() 
         this.getOrder()     
     }
-    getloc = async() =>{
-        const location = await AsyncStorage.getItem('Location')
-        const loc = JSON.parse(location)
-        console.log(loc)
-        location !== null ? 
-            this.setState({
-                location : loc.title
-            }) :
-            this.setState({
-                location : 'Please add your location'
-            })
-    }
+ 
     getOrder = async() =>{
         let token = await AsyncStorage.getItem('token')
             
@@ -66,7 +54,7 @@ render(){
         <View style = {style.container}>
             
             <View style={{backgroundColor:'black'}}>
-            <Text style = {{margin:18,fontSize:20 , fontWeight:'bold',marginBottom:10,color:'white'}}>Accepted Orders</Text>
+            <Text style = {{margin:18,fontSize:18 , fontWeight:'bold',marginVertical:15,color:'white'}}>Accepted Orders</Text>
             </View>
             {
                 this.state.data.toString() === "" ? 

@@ -103,7 +103,7 @@ export default class CreateRequest extends React.Component {
                 "cuisine": this.state.Cuisine.toString(),
                 "priceLow": this.state.priceLow.toString(),
                 "priceMax": this.state.priceMax.toString(),
-                "address": this.state.Flat_no + " " + this.state.Wing +" "+  this.state.building +" "+  this.state.location,
+                "address": this.state.Flat_no + " " +  this.state.building +" "+  this.state.location,
                 "bookingDate": this.state.date,
                 "bookingTime": this.state.time,
                 "location": {
@@ -136,11 +136,11 @@ export default class CreateRequest extends React.Component {
         return (
             <View style={style.container}>
             <ScrollView scrollEnabled={this.state.enable}>
-                <Text style={{ fontSize: 40, alignItems: 'center', alignSelf: 'center', fontWeight: 'bold', marginTop: 30, marginBottom: 50 }}>Create Request</Text>
-                <TouchableOpacity style={{marginHorizontal:30 , backgroundColor:'white' , marginBottom:20 , height:50 , justifyContent:'center' , borderColor:'#dcdcdc' , borderWidth:1 , borderRadius:5}}
+                <Text style={{ fontSize: 30, alignItems: 'center', alignSelf: 'center', fontWeight: 'bold', marginTop: 30, marginBottom: 30 }}>Create Request</Text>
+                <TouchableOpacity style={{marginHorizontal:30 , backgroundColor:'white' , marginBottom:15 , height:40 , justifyContent:'center' , borderColor:'#dcdcdc' , borderWidth:1 , borderRadius:5}}
                     onPress ={() => this.setState({isVisible:true})}
                 >
-                    <Text style={{fontSize:20,paddingLeft:10}}>
+                    <Text style={{fontSize:15,paddingLeft:10}}>
                         {this.state.date ? this.state.date.toString().slice(0,16) + moment(this.state.time,"hh:mm").format("h:mm A")  :'Date And Time of Booking'}
                     </Text>
                 </TouchableOpacity>
@@ -156,21 +156,21 @@ export default class CreateRequest extends React.Component {
                     })}}
                     onCancel={() => console.log('Hello')}
                 />
-                <View style={{marginBottom:20}}>
+                <View style={{marginBottom:15}}>
                 <DropDownPicker
                     items={[
                         { label: 'Hourly Booking', value: 'Hourly' },
                         { label: 'Day wise booking' , value: 'Number of days'}
                     ]}
                     placeholder = 'Type of booking'
-                    containerStyle={{ height: 50 }}
+                    containerStyle={{ height: 40 }}
                     style={{ backgroundColor: '#fafafa' , marginHorizontal:30, }}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                     onChangeItem={item => this.setState({
                         type_of_booking: item.value,
                     })}
                     labelStyle={{
-                        fontSize:20,
+                        fontSize:15,
                         textAlign: 'left',
                         color: '#000'
                     }}
@@ -186,19 +186,19 @@ export default class CreateRequest extends React.Component {
                         { label: 'Non-Veg' , value: 'Non-Veg'}
                     ]}
                     placeholder = 'Food Type'
-                    containerStyle={{ height: 50 }}
+                    containerStyle={{ height: 40 }}
                     style={{ backgroundColor: '#fafafa' , marginHorizontal:30, }}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                     onChangeItem={item => this.setState({
                         type_of_meal: item.value
                     })}
                     labelStyle={{
-                        fontSize:20,
+                        fontSize:15,
                         textAlign: 'left',
                         color: '#000'
                     }}
                 />
-                <View style = {{marginTop:20}}>
+                <View style = {{marginTop:15}}>
                 <DropDownPicker
                     items={[
                         { label: 'Punjabi',value:'Punjabi' },
@@ -210,7 +210,7 @@ export default class CreateRequest extends React.Component {
                         { label: 'Gujurati' , value:'Gujurati'},
                     ]}
                     placeholder = 'Cuisine'
-                    containerStyle={{ height: 50 }}
+                    containerStyle={{ height: 40 }}
                     style={{ backgroundColor: '#fafafa' , marginHorizontal:30, }}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                     onChangeItem={item => {
@@ -219,7 +219,7 @@ export default class CreateRequest extends React.Component {
                         })
                     }}
                     labelStyle={{
-                        fontSize:20,
+                        fontSize:15,
                         textAlign: 'left',
                         color: '#000'
                     }}
@@ -232,11 +232,11 @@ export default class CreateRequest extends React.Component {
                 />
                 </View>
                 <Text style = {style.text}>Price Range</Text>
-                <View style={{flexDirection:'row' , justifyContent:'center' , marginTop:20}}>
-                <Text style={{fontSize:20, paddingTop:5}}>Rs.</Text>
+                <View style={{flexDirection:'row' , justifyContent:'center' , marginTop:15}}>
+                <Text style={{fontSize:15, paddingTop:5}}>Rs.</Text>
                 <Text style={style.text2}>{this.state.priceLow.toString()}</Text>
-                <Text style={{fontSize:20, paddingTop:5,paddingRight:10}}>to</Text>
-                <Text style={{fontSize:20, paddingTop:5}}>Rs.</Text>
+                <Text style={{fontSize:15, paddingTop:5,paddingRight:10}}>to</Text>
+                <Text style={{fontSize:15, paddingTop:5}}>Rs.</Text>
                 <Text style={style.text2}>{this.state.priceMax.toString()}</Text>
                 
                 </View>
@@ -245,33 +245,29 @@ export default class CreateRequest extends React.Component {
                 <View style={{flexDirection:'row' , justifyContent:'center' ,marginTop:15}}>
                 <TextInput
                 keyboardType={'ascii-capable'}
-                        placeholder='Flat No.'
+                        placeholder='Address Line1'
                         onChangeText={(text) => this.setState({
                             Flat_no:text
                         })}
                         style={style.textinput2}
                 ></TextInput>
-                 <TextInput
-                keyboardType={'ascii-capable'}
-                        placeholder='Wing'
-                        onChangeText={(text) => this.setState({
-                            Wing:text
-                        })}
-                        style={style.textinput2}
-                ></TextInput>
                 </View>
+                <View style={{flexDirection:'row' , justifyContent:'center' ,marginTop:15}}>
+
                 <TextInput
                 keyboardType={'ascii-capable'}
-                        placeholder='Buiding Name'
+                        placeholder='Address line 2'
                         onChangeText={(text) => this.setState({
                             building:text
                         })}
                         style={style.textinput2}
                 ></TextInput>
-                <View >
-                <Text style={style.textinput3}>{this.state.location ? this.state.location : "Please add your location"}</Text>
                 </View>
-                <Text style={{marginLeft:20,color:'red' , fontSize:15}}>*To change address please go to home screen</Text>
+                <Text style = {style.text}>Complete Address</Text>
+                <TouchableOpacity onPress={() => this.state.location ? this.props.navigation.navigate('Maps') : Alert.alert("Please add a location from home screen to see location on the Map")} >
+                <Text style={style.textinput3}>{this.state.location ? this.state.Flat_no +" "+ this.state.building +" "+ this.state.location : "Please add your location"}</Text>
+                </TouchableOpacity>
+                <Text style={{marginLeft:20,color:'red' , fontSize:15}}>{"*To change address please go to home screen \nTouch to view in maps"}</Text>
                 <TouchableOpacity style={{alignSelf:'center' , backgroundColor:'#000' , marginVertical:30 , borderRadius:10}} onPress={() => this.sendRequest()} >
                     <Text style = {style.button}>Confirm Request</Text>
                 </TouchableOpacity>
@@ -286,7 +282,7 @@ const style = StyleSheet.create({
     },
 
     text: {
-        fontSize: 20,
+        fontSize: 15,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -297,7 +293,7 @@ const style = StyleSheet.create({
         fontWeight:'bold'
     },
     textinput: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
@@ -305,7 +301,7 @@ const style = StyleSheet.create({
         backgroundColor:'#fff'
     },
     button: {
-        fontSize: 25,
+        fontSize: 20,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -315,7 +311,7 @@ const style = StyleSheet.create({
 
     },
     textinput2: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
@@ -323,11 +319,11 @@ const style = StyleSheet.create({
         marginHorizontal:20,
         alignSelf:'center',
         backgroundColor:"#fff",
-        marginVertical:10,
-        width:160
+        marginVertical:5,
+        flexGrow:100
     },
     textinput3: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
@@ -336,7 +332,7 @@ const style = StyleSheet.create({
         marginTop:15,
     },
     text2: {
-        fontSize: 20,
+        fontSize: 15,
         borderColor:'grey' , 
         borderRadius:10,
         marginHorizontal:20,

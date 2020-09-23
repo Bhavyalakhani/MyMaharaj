@@ -84,7 +84,7 @@ render(){
     return(
         <View style = {style.container}>
             <View style={{backgroundColor:'black'}}>
-            <Text style = {{margin:18,fontSize:20 , fontWeight:'bold',marginBottom:10,color:'white'}}>Past / Completed Orders</Text>
+            <Text style = {{margin:18,fontSize:18 , fontWeight:'bold',marginVertical:15,color:'white'}}>Past / Completed Orders</Text>
             </View>
         {this.state.data.toString() == "" ? 
             <View style={{justifyContent:'center',flex:1}}>
