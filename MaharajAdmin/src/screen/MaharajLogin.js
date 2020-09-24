@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, ImageBackground , Image, View , TextInput , TouchableOpacity,LayoutAnimation,UIManager, Alert} from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage"
 import * as Animatable from 'react-native-animatable'
+import messaging from '@react-native-firebase/messaging'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -16,11 +17,48 @@ export default class LoginScreen extends React.Component{
             OTP : true,
             tokens:"",
             mobile:"",
-            OTP_value:""
+            OTP_value:"",
+            SignalId:""
 
 
         }
     }
+    async componentDidMount(){
+        this.checkPermission()
+    }
+    async checkPermission() {
+        const enabled = await messaging().hasPermission();
+        if (enabled) {
+            this.getToken();
+        } else {
+            this.requestPermission();
+        }
+      }
+      
+        //3
+      async getToken() {
+    
+            const fcmToken = await messaging().getToken()
+            if (fcmToken) {
+                // user has a device token
+                console.log(fcmToken)
+                this.state.SignalId = fcmToken
+            }
+        
+      }
+      
+        //2
+      async requestPermission() {
+        try {
+            await messaging().requestPermission();
+            // User has authorised
+            this.getToken();
+        } catch (error) {
+            // User has rejected permissions
+            console.log('permission rejected');
+        }
+      }
+      
     sendotp =async ()=>{                                                                //fetching the send sms api and handling with errors 
         if(this.state.mobile){
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -62,8 +100,19 @@ export default class LoginScreen extends React.Component{
                 if(data.success){
                     this.setState({tokens:data.token})
                     AsyncStorage.setItem('token',this.state.tokens)
-                    console.warn(this.state.tokens)
-                    this.props.navigation.navigate('MainMaharaj')
+                    fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/updateSignal/"+data.sendMaharaj._id,{
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+                        ,
+                        body:JSON.stringify({
+                            "signal" : this.state.SignalId
+                        })
+                    }).then((response) => response.json()).then((data) => {
+                        console.log(data)
+                        this.props.navigation.navigate('MainMaharaj')
+                    })
                 }
                 else{
                         Alert.alert(data.msg)

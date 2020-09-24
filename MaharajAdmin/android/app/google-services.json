@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1009964739016",
+    "firebase_url": "https://maharajadmin.firebaseio.com",
+    "project_id": "maharajadmin",
+    "storage_bucket": "maharajadmin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009964739016:android:a1ab9db9fd4c5c1d6f78fd",
+        "android_client_info": {
+          "package_name": "com.maharajadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009964739016-4gpb8ok3anpjrk7rtuhn9r5cc9lcn9ca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRRAX3jcQuM-I_hFaid_ufXzhaaH2asKw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009964739016-4gpb8ok3anpjrk7rtuhn9r5cc9lcn9ca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

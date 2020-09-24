@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, ImageBackground , Image, View , TextInput , TouchableOpacity,LayoutAnimation,UIManager, Alert} from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage"
-import OneSignal from 'react-native-onesignal'
+import messaging from '@react-native-firebase/messaging'
 
 if (Platform.OS === 'android') {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -22,18 +22,40 @@ export default class LoginScreen extends React.Component{
 
         }
     }
-    componentDidMount(){
-     OneSignal.addEventListener('ids', this.onIds);
+    async componentDidMount(){
+        this.checkPermission()
     }
-
-    componentWillUnmount(){
-      OneSignal.removeEventListener('ids', this.onIds);
-    }
-
-    onIds = (device) => {
-        this.state.SignalId = device.userId
-        console.log('Device info: ', this.state.SignalId);
-
+    async checkPermission() {
+        const enabled = await messaging().hasPermission();
+        if (enabled) {
+            this.getToken();
+        } else {
+            this.requestPermission();
+        }
+      }
+      
+        //3
+      async getToken() {
+    
+            const fcmToken = await messaging().getToken()
+            if (fcmToken) {
+                // user has a device token
+                console.log(fcmToken)
+                this.state.SignalId = fcmToken
+            }
+        
+      }
+      
+        //2
+      async requestPermission() {
+        try {
+            await messaging().requestPermission();
+            // User has authorised
+            this.getToken();
+        } catch (error) {
+            // User has rejected permissions
+            console.log('permission rejected');
+        }
       }
     sendotp =async ()=>{                                                                //fetching the send sms api and handling with errors 
         if(this.state.mobile){

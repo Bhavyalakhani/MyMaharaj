@@ -12,6 +12,7 @@ import * as Animatable from "react-native-animatable"
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/AntDesign'
+import {Notification} from '../Notification/notification'
 
 class Details extends Component {
     constructor(props) {
@@ -51,11 +52,11 @@ class Details extends Component {
             }
         }
     }
-    onAccept = async (id) => {
+    onAccept = async (item) => {
         const token = await AsyncStorage.getItem('token')
         console.log(token)
-        console.log(id)
-        fetch('https://maharaj-3.herokuapp.com/api/v1/maharajReq/' + id,
+        console.log(item)
+        fetch('https://maharaj-3.herokuapp.com/api/v1/maharajReq/' + item._id,
             {
                 method: 'PUT',
                 headers: {
@@ -68,13 +69,19 @@ class Details extends Component {
             ).then((data) => {
                 console.log(data.data)
                 this.props.navigation.navigate("CurrentOrder")
-            })
+            }).then(() => {
+            fetch("https://maharaj-3.herokuapp.com/api/v1/auth/users/"+item.createdBy)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    Notification(data.signal,`Your order has been Accepted`,`Order No : ${item._id}\nDate : ${[item.bookingDate].toLocaleString().slice(8, 10)}/${[item.bookingDate].toLocaleString().slice(5, 7)}/${[item.bookingDate].toLocaleString().slice(0, 4)}\nTime : ${moment(item.bookingTime,"hh:mm").format("h:mm A")}`)
+                })
 
-
+        })
     }
-    onComplete = async(id) =>{
-        console.log(id)
-        fetch('https://maharaj-3.herokuapp.com/api/v1/req/complete/'+id,
+    onComplete = async(item) =>{
+        console.log(item)
+        fetch('https://maharaj-3.herokuapp.com/api/v1/req/complete/'+item._id,
             {
                 method:'PUT',
                 headers:{
@@ -83,8 +90,16 @@ class Details extends Component {
             }, ).then((response) => 
                 response.json()
             
-        ).then((data) =>{
-            console.log(data.data)
+        )
+        .then(() => {
+            fetch("https://maharaj-3.herokuapp.com/api/v1/auth/users/"+item.createdBy)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    Notification(data.signal,`Your order has been Completed`,`Order No : ${item._id}\nAmount to be Paid : ₹${item.priceMax}`)
+                })
+
+        }).then(() => {
             this.props.navigation.navigate("Home")
         })
         
@@ -109,7 +124,15 @@ class Details extends Component {
             }, ).then((response) => 
                 response.json()
             
-        ).then((data) =>{
+        ).then(() => {
+            fetch("https://maharaj-3.herokuapp.com/api/v1/auth/users/"+item.createdBy)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    Notification(data.signal,`Your updated order has been ${accepted ? "Accepted" : "Rejected"}`,`Order No : ${item._id}\nAmount to be Paid:${item.priceLow}`)
+                })
+
+        }).then((data) =>{
             console.log(data.data)
             this.props.navigation.navigate("Home")
         })
@@ -145,7 +168,7 @@ class Details extends Component {
                                 item.location ?
                                     <View style={{ flexDirection: 'column' }}>
                                         <Text style={style.boxText2}>Date of Booking: {`${[item.bookingDate].toLocaleString().slice(8, 10)}/${[item.bookingDate].toLocaleString().slice(5, 7)}/${[item.bookingDate].toLocaleString().slice(0, 4)}`} </Text>
-                                        <Text style={style.boxText2}>Time of Booking : {item.bookingTime}</Text>
+                                        <Text style={style.boxText2}>Time of Booking : {moment(item.bookingTime,"hh:mm").format("h:mm A")}</Text>
                                         <Text style={style.boxText2}>{item.bookingType + " :\t" + item.bookingQuantity} </Text>
                                         <Text style={style.boxText2}>Foodtype : {item.foodType} </Text>
                                         <Text style={style.boxText2}>Cuisine : {item.cuisine}</Text>
@@ -191,13 +214,13 @@ class Details extends Component {
                                             :
                                                 
                                                 item.status === "accepted" ?
-                                                    <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onComplete(item._id)}>
+                                                    <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onComplete(item)}>
                                                         <Text style={[style.boxText, { color: '#fff', backgroundColor: '#000', padding: 15, borderRadius: 10, fontWeight: 'bold' }]}>Complete</Text>
                                                     </TouchableOpacity> 
                                                     : 
                                                     null
                                                 :
-                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 1 }} onPress={() => this.onAccept(item._id)}>
+                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 1 }} onPress={() => this.onAccept(item)}>
                                                 <Text style={[style.boxText, { color: '#fff', backgroundColor: '#000', padding: 15, borderRadius: 10, fontWeight: 'bold', paddingHorizontal: 40, marginTop: 50 }]}>Accept</Text>
                                             </TouchableOpacity> 
                 

@@ -31,7 +31,12 @@ export default class CurrentOrder extends React.Component{
             
         ).then((data) =>{
             console.log(data.data)
-            this.setState({data : data.data})
+            const result = data.data.map((d) => {
+                return moment(new Date).isBefore(d.bookingDate) ? d : null 
+             }).filter( d => d !== null)
+             console.log("Current Order =>")
+             console.log(result)
+             this.setState({data : result})
         })
     }
 
@@ -49,8 +54,17 @@ render(){
     return(
         <View style = {style.container}>
             <View style ={{flexDirection:'row' ,backgroundColor:'#000',  }}>
-                    <Text style = {{fontSize : 30 ,color :'#fff' , fontWeight:'bold' , marginLeft:10 , marginVertical:10, borderBottomWidth:1 ,marginTop:10}}>All Requests</Text>
+                    <Text style = {{fontSize : 18 ,color :'#fff' , fontWeight:'bold' , marginLeft:10 , marginVertical:10, borderBottomWidth:1 ,marginTop:10}}>All Requests</Text>
             </View>
+            {
+                this.state.data.toString() === "" ?
+                <View style={{justifyContent:'center',flex:1 , paddingBottom:100}}>
+                <Image source ={require('../images/hat.png')} style ={{height:200 , width:200 , justifyContent:'center',alignSelf:'center'}}/>
+                <Text style={style.Company}>
+                MyMaharaj Inc.
+            </Text>
+            </View>
+            :
             <FlatList
              data={this.state.data.reverse()}
              keyExtractor={(item, index) => item._id}
@@ -58,7 +72,8 @@ render(){
             
             
             <TouchableOpacity style={style.box} onPress={() => {this.props.navigation.navigate('Details',{'details':item})}}>
-                <View style={{ flexDirection: 'column' , flex:1 }}>
+                <View style={{ flexDirection: 'column' , alignItems:"center"}}>
+                <Image source ={require('../images/hat.png')} style ={{height:70 , width:100 }}/>
                     <Text style={style.boxText2}>Date of Booking: {`${[item.bookingDate].toLocaleString().slice(8,10)}/${[item.bookingDate].toLocaleString().slice(5,7)}/${[item.bookingDate].toLocaleString().slice(0,4)}`} </Text>
                     <Text style={style.boxText2}>Time of Booking : {moment(item.bookingTime,"hh:mm").format("h:mm A")}</Text>
                     <Text style={style.boxText2}>Cuisine : {item.cuisine }</Text>
@@ -70,6 +85,7 @@ render(){
              }
              
             />
+            }
         </View>
 )}
 }
@@ -104,17 +120,24 @@ const style = StyleSheet.create({
     },
     boxText: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         
 
     },
     boxText2: {
         color: 'black',
-        margin: 10,
-        fontSize:18,
+        margin: 5,
+        fontSize:15,
         marginBottom:0
 
-    }
+    },
+    Company :{
+        alignSelf:'center',
+        marginBottom:20,
+        fontWeight:"400",
+        fontSize:25,
+    },
+
 
 })

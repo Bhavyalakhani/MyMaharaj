@@ -28,7 +28,17 @@ import DetailsAdmin from './src/screen/DetailsAdmin'
 import LoginScreen from './src/screen/Verify';
 import ApproveUser from './src/screen/ApproveUser'
 import Approve from './src/screen/Approve';
+import messaging from '@react-native-firebase/messaging'
+import { Alert } from 'react-native';
+
 export default class App extends React.Component {
+
+  async componentDidMount() {
+    await messaging().onMessage(listner => Alert.alert(listner.notification.body))
+    
+  }
+  
+    //1
   
   render() {
     return (

@@ -67,7 +67,6 @@ export default class LoginScreen extends React.Component{
                     this.props.navigation.navigate('RegisterAdmin')
                 }
                 else{
-                    AsyncStorage.setItem('token',this.state.token)
                     this.props.navigation.navigate('MaharajLogin')
                     console.warn(this.state.token)
                 }
