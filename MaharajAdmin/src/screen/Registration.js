@@ -67,7 +67,7 @@ constructor(){
              if(this.state.password==this.state.confirm_password && this.state.password.length>3 && this.state.mobile.match(numbers)){
                  if(this.state.mobile.length==10){
                      if( this.state.city.match(letters) && this.state.cuisine[0]){
-                         if(this.state.zipcode.match(numbers)  && this.state.yearsOfExp.match(numbers) && this.state.kin.match(number)){
+                         if(this.state.zipcode.match(numbers)  && this.state.yearsOfExp.match(numbers) && this.state.kin.match(numbers)){
                             ToastAndroid.showWithGravity(
                                 "Registering",
                                 ToastAndroid.SHORT,
@@ -83,7 +83,7 @@ constructor(){
                                     password:this.state.password,
                                     mobile:this.state.mobile,
                                     zipcode:this.state.zipcode,
-                                    yearsOfExp:Number(this.state.yearsOfExp),
+                                    yearsOfExp:(this.state.yearsOfExp),
                                     kin:this.state.kin,
                                     address:this.state.address,
                                     city:this.state.city,
@@ -146,7 +146,9 @@ constructor(){
             animation="fadeInUpBig"
             style={styles.footer}
         >
-            <ScrollView>
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            >
             <Text style={styles.text_footer}>Username</Text>
             <View style={styles.action}>
                 <FontAwesome 
