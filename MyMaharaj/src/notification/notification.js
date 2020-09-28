@@ -1,7 +1,7 @@
 export const Notification = (id, title, message) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "key = AAAABGEWKFQ:APA91bEhY4wLEjOzIS46A8Dwlkyeou88hCIPcr6KYrdzigzYxlLDVYzso__dMaa6TH63RIBhLgU3kmxg-JjG-SaLmXRmpJYVW--fFm8nsksHNIee753R6N1EIXXjyd7zfuAmiNGs8etI");
+    myHeaders.append("Authorization", "key = AAAA6yaW6cg:APA91bHWzoZvslHI5SoOoGtnQGUBj6D8QNOcjeUwygh6T-edyGHLPQeIu9Lk2fpJd2zxyQEwI7CNKutRYzZujN2jOSfreD781rGWKjHB8mgp1AlbJ7rUYmzaZXtloHRD30Q7Em86kZik");
 
     var raw = JSON.stringify({ "to": id, "notification": { "title": title, "body": message, "mutable_content": true, "sound": "Tri-tone" }, "data": {} });
 

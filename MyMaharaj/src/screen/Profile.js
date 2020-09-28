@@ -31,13 +31,13 @@ export default class Profile extends React.Component{
                 response.json()
             
         ).then((data) =>{
+            console.log("Accepted Order =>")
             console.log(data.data)
             this.setState({data : data.data})
         })
     }
     componentDidMount= async() => {
             
-            this.getloc()
             this.getOrder()
             this.focusListner = this.props.navigation.addListener('didFocus' , () =>{
                 this.onFocusFunction()

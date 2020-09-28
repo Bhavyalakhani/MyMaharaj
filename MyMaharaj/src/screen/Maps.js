@@ -23,7 +23,7 @@ export default class Maps extends React.Component{
               this.setState({
                   latitude : loc.long_lat.lat,
                   longitude : loc.long_lat.lng,
-                  title:loc
+                  title:loc.title
               }) :
               this.setState({
                   location : 'Please add your location'
@@ -52,8 +52,7 @@ export default class Maps extends React.Component{
               <Marker  
                   DRAGGABLE
                   coordinate={{ latitude: this.state.latitude, longitude: this.state.longitude }}  
-                  title={"Home"}  
-                  description={"Java Training Institute"}  
+                  title={this.state.title}  
               />  
               </MapView>  
           

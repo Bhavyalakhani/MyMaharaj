@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text, StyleSheet, ImageBackground, Image, View, TextInput, TouchableOpacity ,ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, StyleSheet, ImageBackground, Image, View, TextInput, TouchableOpacity ,ScrollView, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-community/async-storage'
-import { ThemeColors } from 'react-navigation';
-
+import moment from "moment"
+import {Notification} from '../notification/notification'
 export default class ModifyRequest extends React.Component {
     constructor(props) {
         super(props)
@@ -43,7 +42,8 @@ export default class ModifyRequest extends React.Component {
             priceLow: item.priceLow,
             priceMax: item.priceMax,
             location: item.address,
-            id : item._id
+            id : item._id,
+            acceptedBy : item.acceptedBy
         })
     }
 
@@ -59,6 +59,7 @@ export default class ModifyRequest extends React.Component {
                             priceLow:350*parseFloat(text) - 50,
                             priceMax:350*parseFloat(text),
                         })}
+                        value = {this.state.bookingQuantity}
                         style={style.textinput}
                     ></TextInput>
                 </View>
@@ -76,6 +77,7 @@ export default class ModifyRequest extends React.Component {
                             priceMax:700*parseFloat(text),
                         })}
                         style={style.textinput}
+                        value = {this.state.bookingQuantity}
                 ></TextInput>
                 </View>
             )
@@ -87,7 +89,6 @@ export default class ModifyRequest extends React.Component {
     }
     sendRequest = async() =>{
         let token = await AsyncStorage.getItem('token')
-        console.log(token)
         fetch('https://maharaj-3.herokuapp.com/api/v1/req/modify/'+this.state.id,
         {
             method:"PUT",
@@ -104,11 +105,18 @@ export default class ModifyRequest extends React.Component {
                 "bookingTime": this.state.time,
             })
         }).then((response) => response.json())
+        .then(() => {
+            fetch("https://maharaj-3.herokuapp.com/api/v1/maharajAuth/maharajs/"+this.state.acceptedBy)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    Notification(data.signal,`Your order has been Modified`,`Order No : ${this.state.id}\nDate : ${[this.state.date].toLocaleString().slice(8, 10)}/${[this.state.date].toLocaleString().slice(5, 7)}/${[this.state.date].toLocaleString().slice(0, 4)}\nTime : ${moment(this.state.time,"hh:mm").format("h:mm A")}`)
+                })
+        })
         .then((data) => 
             console.log(data),
             this.props.navigation.navigate('CurrentOrder')
-        )
-    }
+        )}
 
     render() {
         return (
@@ -120,13 +128,14 @@ export default class ModifyRequest extends React.Component {
                 >
              
 
-                    <Text style={{fontSize:20,paddingLeft:10}}>
-                        {this.state.picked ? this.state.date + this.state.time  :`${[this.state.date].toLocaleString().slice(8, 10)}/${[this.state.date].toLocaleString().slice(5, 7)}/${[this.state.date].toLocaleString().slice(0, 4)}\t\t`+this.state.time}
+                    <Text style={{fontSize:15,paddingLeft:10}}>
+                        {this.state.picked ? this.state.date + this.state.time  :`${[this.state.date].toLocaleString().slice(8, 10)}/${[this.state.date].toLocaleString().slice(5, 7)}/${[this.state.date].toLocaleString().slice(0, 4)}\t\t`+moment(this.state.time,"hh:mm").format("h:mm A")}
                     </Text>
                 </TouchableOpacity>
                 <DateTimePickerModal
                     isVisible={this.state.isVisible}
                     mode="datetime"
+                    display = {'spinner'}
                     onConfirm={(date) => this.setState({
                         date:`${date.toDateString()} `,
                         time:`${date.getHours() % 12 || 12}:${date.getMinutes() <=9 ? '0'+date.getMinutes() : date.getMinutes()} ${date.getHours()/12 >= 1 ? 'PM' : 'AM'}`,
@@ -142,14 +151,14 @@ export default class ModifyRequest extends React.Component {
                         { label: 'Day wise booking' , value: 'Number of days'}
                     ]}
                     placeholder = {this.state.type_of_booking}
-                    containerStyle={{ height: 50 }}
+                    containerStyle={{ height: 40 }}
                     style={{ backgroundColor: '#fafafa' , marginHorizontal:30, }}
                     dropDownStyle={{ backgroundColor: '#fafafa' }}
                     onChangeItem={item => this.setState({
                         type_of_booking: item.value
                     })}
                     labelStyle={{
-                        fontSize:20,
+                        fontSize:15,
                         textAlign: 'left',
                         color: '#000'
                     }}
@@ -161,24 +170,27 @@ export default class ModifyRequest extends React.Component {
                 </View>
                 <View style={{marginBottom:20}}>
                 <Text 
-                    style={{   marginHorizontal:30,height: 50,fontSize:20 , borderWidth:1,paddingTop:10,paddingLeft:10,borderColor:'grey' , borderRadius:10 }}
+                    style={{   marginHorizontal:30,height: 40,fontSize:15 , borderWidth:1,paddingTop:5,paddingLeft:10,borderColor:'grey' , borderRadius:10 }}
                 
                 >{this.state.foodType}</Text>
                 </View>
                 <Text 
-                    style={{   marginHorizontal:30,height: 50,fontSize:20 , borderWidth:1,paddingTop:10,paddingLeft:10,borderColor:'grey' , borderRadius:10 }}
+                    style={{   marginHorizontal:30,height: 40,fontSize:15 , borderWidth:1,paddingTop:5,paddingLeft:10,borderColor:'grey' , borderRadius:10 }}
                 
                 >{this.state.Cuisine}</Text>
                 <Text style = {style.text}>Price Range</Text>
                 <View style={{flexDirection:'row' , justifyContent:'center' , marginTop:20}}>
                 <Text
-                        style={style.textinput2}
-                    >{this.state.priceLow}</Text>
+                       style={{fontSize:15}}
+                    >Rs. {this.state.priceLow}</Text>
+                <Text
+                       style={{fontSize:15}}
+                    >  to  </Text>
                  <Text
                     
-                        style={style.textinput2}
+                    style={{fontSize:15}}
 
-                >{this.state.priceMax}</Text>
+                >Rs. {this.state.priceMax}</Text>
                 </View>
                 <Text style = {style.text}>Address Details</Text>
                 <Text style={style.textinput3}>{this.state.location}</Text>
@@ -196,7 +208,7 @@ const style = StyleSheet.create({
     },
 
     text: {
-        fontSize: 20,
+        fontSize: 15,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -207,7 +219,7 @@ const style = StyleSheet.create({
         fontWeight:'bold'
     },
     textinput: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
@@ -215,7 +227,7 @@ const style = StyleSheet.create({
         backgroundColor:'#fff'
     },
     button: {
-        fontSize: 25,
+        fontSize: 20,
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
@@ -225,7 +237,7 @@ const style = StyleSheet.create({
 
     },
     textinput2: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
@@ -235,12 +247,12 @@ const style = StyleSheet.create({
         width:120
     },
     textinput3: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft:10,
         borderColor:'grey' , 
         borderWidth:1,
         borderRadius:10,
         marginHorizontal:20,
-        marginTop:15,
+        marginTop:5,
     },
 })

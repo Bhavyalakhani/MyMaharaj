@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, ImageBackground, Image, View, TextInput, TouchableOpacity ,ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker  from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-community/async-storage'
 import { ThemeColors } from 'react-navigation';
 import moment from 'moment'
@@ -27,7 +27,8 @@ export default class CreateRequest extends React.Component {
             Flat_no:'',
             Wing:'',
             Multiplier:0,
-            building:''
+            building:'',
+            see:false
         }
     }
     componentDidMount = async() => {
@@ -131,6 +132,44 @@ export default class CreateRequest extends React.Component {
             Alert.alert("Please fill all the fields")
         }
     }
+    handlePicker = (datetime) => {
+        const rn = moment(new Date()).format('YYYY-MM-DD')
+        const data = moment(datetime).format('YYYY-MM-DD')
+        
+        
+        if(moment(rn).isSameOrAfter(data))
+              Alert.alert("Invalid Date")
+          else {
+              this.setState({
+                  isVisible: false,
+                  date: datetime,
+                  time: `${datetime.getHours() <=9 ? '0' + datetime.getHours() : datetime.getHours()}:${datetime.getMinutes() <=9 ? '0'+datetime.getMinutes() : datetime.getMinutes()}`
+                  //date_time : moment(datetime).format()
+                  
+              },)//() => console.log("Date is ", this.state.date))
+          }
+           
+        
+        //console.warn("A date has been picked: ", date);
+    }
+
+    hidePicker = (datetime) => {
+      this.setState({
+          isVisible: false,
+          //date: moment(datetime).format(),
+          
+      },)//() => console.log("Date issss ", this.state.date))
+      
+  }
+
+  showPicker = () => {
+      //console.log('hell')
+      this.setState({
+          isVisible: true,
+      })
+      //console.log(this.state.isVisible)
+  }
+
 
     render() {
         return (
@@ -144,17 +183,12 @@ export default class CreateRequest extends React.Component {
                         {this.state.date ? this.state.date.toString().slice(0,16) + moment(this.state.time,"hh:mm").format("h:mm A")  :'Date And Time of Booking'}
                     </Text>
                 </TouchableOpacity>
-                <DateTimePickerModal
-                    isVisible={this.state.isVisible}
-                    mode="datetime"
-                    onConfirm={(date) => {
-                        console.log(date.toLocaleDateString())
-                        this.setState({
-                        date:`${date} `,
-                        time:`${date.getHours() <=9 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() <=9 ? '0'+date.getMinutes() : date.getMinutes()}`,
-                        isVisible:false
-                    })}}
-                    onCancel={() => console.log('Hello')}
+                <DateTimePicker
+                        isVisible={this.state.isVisible}
+                        mode='datetime'
+                        display = {'spinner'}
+                        onConfirm={this.handlePicker}
+                        onCancel={this.hidePicker}
                 />
                 <View style={{marginBottom:15}}>
                 <DropDownPicker

@@ -108,10 +108,10 @@ class Details extends Component {
         console.log(lat , lng)
         Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`);
       }
-      onModified = async(accepted,id) =>{
-        console.log(id)
+      onModified = async(accepted,item) =>{
+        console.log(item._id)
         const token = await AsyncStorage.getItem('token')
-        fetch('https://maharaj-3.herokuapp.com/api/v1/maharajReq/modify/'+id,
+        fetch('https://maharaj-3.herokuapp.com/api/v1/maharajReq/modify/'+item._id,
             {
                 method:'PUT',
                 headers:{
@@ -128,12 +128,11 @@ class Details extends Component {
             fetch("https://maharaj-3.herokuapp.com/api/v1/auth/users/"+item.createdBy)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data)
-                    Notification(data.signal,`Your updated order has been ${accepted ? "Accepted" : "Rejected"}`,`Order No : ${item._id}\nAmount to be Paid:${item.priceLow}`)
+                    
+                    Notification(data.signal,`Your updated order has been ${accepted ? "Accepted" : "Rejected"}`,`Order No : ${item._id}\nDate : ${[item.bookingDate].toLocaleString().slice(8, 10)}/${[item.bookingDate].toLocaleString().slice(5, 7)}/${[item.bookingDate].toLocaleString().slice(0, 4)}\nTime : ${moment(item.bookingTime,"hh:mm").format("h:mm A")}`)
                 })
 
         }).then((data) =>{
-            console.log(data.data)
             this.props.navigation.navigate("Home")
         })
         
@@ -203,10 +202,10 @@ class Details extends Component {
                                                     <Text style = {[style.boxText,{paddingLeft:10}]}>Order details has been modified</Text>
                                                 <View style = {{flexDirection:'row' , justifyContent:'center'}}>
                                                     
-                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onModified(true,item._id)}>
+                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onModified(true,item)}>
                                                 <Text style={[style.boxText, { color: '#fff', backgroundColor: 'green', padding: 15, borderRadius: 10, fontWeight: 'bold' }]}>Accept</Text>
                                                 </TouchableOpacity> 
-                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onModified(false,item._id)}>
+                                                <TouchableOpacity style={{ justifyContent: "center", flexDirection: 'row', flex: 0 }} onPress={() => this.onModified(false,item)}>
                                                 <Text style={[style.boxText, { color: '#fff', backgroundColor: 'red', padding: 15, borderRadius: 10, fontWeight: 'bold' }]}>Reject</Text>
                                             </TouchableOpacity> 
                                                 </View>

@@ -1,8 +1,9 @@
-import {createSwitchNavigator, createAppContainer } from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react'
+import {Alert, View} from "react-native"
 
 import CreateRequest from './src/screen/CreateRequest'
 import CurrentOrder from './src/screen/CurrentOrder'
@@ -20,24 +21,35 @@ import ContactUs from './src/screen/ContactUs';
 import Location from './src/screen/Location'
 import Maps from './src/screen/Maps'
 import messaging from '@react-native-firebase/messaging'
-import { Alert } from 'react-native';
+
+ 
 
 export default class App extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = { showAlert: false  , title : "" , body : ""};
+  };
+ 
   async componentDidMount() {
-    await messaging().onMessage(listner => Alert.alert(listner.notification.body))
-    
+    await messaging().onMessage(listner => Alert.alert(`${listner.notification.title}`,`${listner.notification.body}`))
+
   }
-  
-    //1
-  
-    
+
+  //1           
+ 
+  hideAlert = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
   render() {
 
     return (
-      
-          <AppContainer />
-     
+
+        <AppContainer />
+
+
+
     );
   }
 }
@@ -45,78 +57,88 @@ export default class App extends React.Component {
 
 const CurrentNav = createStackNavigator(
   {
-  CreateRequest : CreateRequest,
-  ModifyRequest : ModifyRequest,
-  Details:Details,
-  Maps : Maps,
-  CurrentOrder : CurrentOrder,
-  Location : Location
-},{
-  initialRouteName : 'CurrentOrder',
-  headerMode:'none'
+    CreateRequest: CreateRequest,
+    ModifyRequest: ModifyRequest,
+    Details: Details,
+    Maps: Maps,
+    CurrentOrder: CurrentOrder,
+    Location: Location
+  }, {
+  initialRouteName: 'CurrentOrder',
+  headerMode: 'none'
 }
 
 )
 
 const SettingsNav = createStackNavigator({
-  FAQ:FAQ,
-  ConatctUs:ContactUs,
-  Settings:{screen:Settings,
-  navigationOptions:{
-    headerMode:"on",
-    title:'Settings',
-    headerTintColor:'white',
-    tabBarIcon:() => (
-      <Icon name="gear" size={25} color='white' />
+  FAQ: FAQ,
+  ConatctUs: ContactUs,
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      headerMode: "on",
+      title: 'Settings',
+      headerTintColor: 'white',
+      tabBarIcon: () => (
+        <Icon name="gear" size={25} color='white' />
       ),
-    height:40,
-    headerStyle:{
-      backgroundColor:'black',
-    },
-    fontSize:20
-  }
+      height: 40,
+      headerStyle: {
+        backgroundColor: 'black',
+      },
+      fontSize: 20
+    }
   }
 },
-{
-  initialRouteName : 'Settings'
-})
+  {
+    initialRouteName: 'Settings'
+  })
 
 const Main = createMaterialTopTabNavigator({
-  SettingsNav :{
-    screen:SettingsNav ,
-    navigationOptions: {title: 'Settings', tabBarIcon: ({ tintColor }) => (
-      <Icon name="gear" size={25} color={tintColor} />
-      )}
+  SettingsNav: {
+    screen: SettingsNav,
+    navigationOptions: {
+      title: 'Settings', tabBarIcon: ({ tintColor }) => (
+        <Icon name="gear" size={25} color={tintColor} />
+      )
+    }
   },
-  CurrentNav : {
-    screen:CurrentNav ,
-    navigationOptions: {title: 'Home', tabBarIcon: ({ tintColor }) => (
-      <Icon name="home" size={25} color={tintColor} />
-      )}
+  CurrentNav: {
+    screen: CurrentNav,
+    navigationOptions: {
+      title: 'Home', tabBarIcon: ({ tintColor }) => (
+        <Icon name="home" size={25} color={tintColor} />
+      )
+    }
   },
-  Profile:{
-    screen:Profile ,
-    navigationOptions: {title: 'Accepted Orders', tabBarIcon: ({ tintColor }) => (
-      <Icon name="check" size={25} color={tintColor} />
-      )}
+  Profile: {
+    screen: Profile,
+    navigationOptions: {
+      title: 'Accepted Orders', tabBarIcon: ({ tintColor }) => (
+        <Icon name="check" size={25} color={tintColor} />
+      )
+    }
   },
-  PastOrders :{
-    screen:PastOrders ,
-    navigationOptions: {title: 'Past Orders', tabBarIcon: ({ tintColor }) => (
-      <Icon name="book" size={25} color={tintColor} />
-      )}
+  PastOrders: {
+    screen: PastOrders,
+    navigationOptions: {
+      title: 'Past Orders', tabBarIcon: ({ tintColor }) => (
+        <Icon name="book" size={25} color={tintColor} />
+      )
+    }
   },
-},{
+}, {
   tabBarPosition: 'bottom',
-    tabBarOptions: {activeTintColor: 'white',
+  tabBarOptions: {
+    activeTintColor: 'white',
     inactiveColor: 'grey', showIcon: 'true',
     style: { backgroundColor: '#212121', },
-    labelStyle: {fontSize:12,textTransform:'capitalize'},
-    tabStyle:{height:60},
-    iconStyle: {inactiveColor:'grey', paddingTop:3, activeColor: 'white'},
-    indicatorStyle: { backgroundColor: 'white', height: 4}
+    labelStyle: { fontSize: 12, textTransform: 'capitalize' },
+    tabStyle: { height: 60 },
+    iconStyle: { inactiveColor: 'grey', paddingTop: 3, activeColor: 'white' },
+    indicatorStyle: { backgroundColor: 'white', height: 4 }
   },
-  order : ['CurrentNav','PastOrders','Profile','SettingsNav'],
+  order: ['CurrentNav', 'PastOrders', 'Profile', 'SettingsNav'],
 })
 
 
@@ -124,16 +146,16 @@ const Main = createMaterialTopTabNavigator({
 
 
 const Base = createSwitchNavigator({
-  SplashScreen : SplashScreen,
-  LoginScreen:LoginScreen,
-  Registration : Registration,
-  Verify:Verify,
-  Main : Main,
+  SplashScreen: SplashScreen,
+  LoginScreen: LoginScreen,
+  Registration: Registration,
+  Verify: Verify,
+  Main: Main,
 },
-{
-  initialRouteName : 'SplashScreen' ,
-  
-})
+  {
+    initialRouteName: 'SplashScreen',
+
+  })
 
 
 

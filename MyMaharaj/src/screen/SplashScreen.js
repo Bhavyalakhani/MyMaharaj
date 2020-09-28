@@ -17,10 +17,10 @@ export default class SplashScreen extends React.Component{
         console.log(token)
         if(token){
             this.setState({is_authenticated:true})
-            this.props.navigation.navigate('Main')
+            setTimeout(() => this.props.navigation.navigate('Main') , 1500)
         }
         else{
-            this.props.navigation.navigate('LoginScreen')
+            setTimeout(() => this.props.navigation.navigate('LoginScreen') , 1500)
         }
     }
 
@@ -28,7 +28,8 @@ render(){
     if(this.state.isloading){
     return(
         <View style = {style.container}>
-            <Text style = {style.text}>Welcome to MY MAHARAJA</Text>
+            <Image source ={require('../images/hat.png')} style ={{height:140 , width:200 , alignSelf:"center"}}/>
+            <Text style = {style.text}>MY MAHARAJA</Text>
         </View>
 )
     }
@@ -38,12 +39,11 @@ const style = StyleSheet.create({
     container: {
         flex:1,
         justifyContent:'center',
-        backgroundColor:'black'
     },
 
     text:{
-        fontSize:50,
+        fontSize:45,
         textAlign:'center',
-        color:'white'
+
     }
 })

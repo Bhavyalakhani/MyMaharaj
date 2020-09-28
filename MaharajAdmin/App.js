@@ -34,7 +34,7 @@ import { Alert } from 'react-native';
 export default class App extends React.Component {
 
   async componentDidMount() {
-    await messaging().onMessage(listner => Alert.alert(listner.notification.body))
+    await messaging().onMessage(listner => Alert.alert(`${listner.notification.title}`,`${listner.notification.body}`))
     
   }
   
