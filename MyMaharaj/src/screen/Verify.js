@@ -61,9 +61,8 @@ export default class LoginScreen extends React.Component{
             .then((response) => response.json())
             .then((data) =>{
                 this.setState({token:data.token})
-                AsyncStorage.setItem('token',this.state.token)
-                this.props.navigation.navigate('Main')
-                console.warn(this.state.token)
+                Alert.alert("Woooo Hoooo!!!!","You have succesfully Signed Up")
+                this.props.navigation.navigate('LoginScreen')
 
         })
         }

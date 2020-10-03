@@ -61,8 +61,7 @@ export default class LoginScreen extends React.Component{
       
     sendotp =async ()=>{                                                                //fetching the send sms api and handling with errors 
         if(this.state.mobile){
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            this.setState({OTP:false})
+            
                await fetch('https://maharaj-3.herokuapp.com/api/v1/maharajAuth/sms',{
                method:'POST',
                 body:JSON.stringify({
@@ -72,7 +71,14 @@ export default class LoginScreen extends React.Component{
                 headers:{
                     "Content-Type":"application/json"
                 }
-            }).then((res) => res.json())
+            }).then((res) => res.json()).then((data) => {
+                if(data === "User not found"){
+                    Alert.alert("Maharaj not found" , "Please Sign Up")
+                }else{
+                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                    this.setState({OTP:false})
+                 }    
+            })
             .catch((error) =>{
                 Alert.alert(error)
             } ) 

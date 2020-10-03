@@ -208,6 +208,7 @@ constructor(){
                         { label: 'Rajasthani ' , value:'Rajasthani '},
                         { label: 'Chinese' , value:'Chinese'},
                         { label: 'Continental' , value:'Continental'},
+                        { label: 'Gujurati' , value:'Gujurati'},
                     ]}
                     placeholder = 'Cuisine'
                     containerStyle={{ height: 50 }}
@@ -267,6 +268,7 @@ constructor(){
                 <TextInput 
                     placeholder="Your Zipcode"
                     style={styles.textInput}
+                    keyboardType = {"number-pad"}
                     autoCapitalize="none"
                     onChangeText={(val) => {this.setState({zipcode:val})}}
                 />
@@ -281,6 +283,7 @@ constructor(){
                 <TextInput 
                     placeholder="Years of Experience"
                     style={styles.textInput}
+                    keyboardType = {"number-pad"}
                     autoCapitalize="none"
                     onChangeText={(val) => {this.setState({yearsOfExp:val})}}
                 />
@@ -295,6 +298,7 @@ constructor(){
                 <TextInput 
                     placeholder="Kin"
                     style={styles.textInput}
+                    keyboardType = {"number-pad"}
                     autoCapitalize="none"
                     onChangeText={(val) => {this.setState({kin:val})}}
                 />

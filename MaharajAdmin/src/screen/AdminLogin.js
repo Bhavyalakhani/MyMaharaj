@@ -85,7 +85,7 @@ export default class LoginScreen extends React.Component{
 render(){
     return(
             <View style = {style.container}>
-                <Text style = {{fontSize:40 , alignItems:'center' , alignSelf:'center' , fontWeight:'bold' , marginTop:100 , marginBottom:100}}>User Login</Text>
+                <Text style = {{fontSize:40 , alignItems:'center' , alignSelf:'center' , fontWeight:'bold' , marginTop:100 , marginBottom:100}}>Admin Login</Text>
                 <Animatable.View
                 animation='fadeInUpBig'>
                 <View style = {{flexDirection:'row' ,  borderWidth:1 , marginLeft:50, marginRight:50 , borderColor:'grey' , borderRadius:10}}>

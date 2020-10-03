@@ -34,6 +34,9 @@ export default class LoginScreen extends React.Component{
                      mobile : this.state.mobile
                  })
                     
+            }).then((res) => res.json())
+            .then((data) => {
+                console.log(data)
             })
             .catch((error) => {
                 Alert.alert(error)
@@ -67,8 +70,8 @@ export default class LoginScreen extends React.Component{
                     this.props.navigation.navigate('RegisterAdmin')
                 }
                 else{
+                    Alert.alert("Sign Up Successful" , "You will be Approved Soon")
                     this.props.navigation.navigate('MaharajLogin')
-                    console.warn(this.state.token)
                 }
                 }
                 else{
