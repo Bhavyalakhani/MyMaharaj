@@ -25,6 +25,8 @@ import UploadPhoto from './src/screen/UploadPhoto'
 import Charts from './src/screen/charts'
 import DetailsAdmin from './src/screen/DetailsAdmin'
 
+import Maps from './src/screen/Maps'
+
 import LoginScreen from './src/screen/Verify';
 import ApproveUser from './src/screen/ApproveUser'
 import Approve from './src/screen/Approve';
@@ -43,7 +45,7 @@ export default class App extends React.Component {
   render() {
     return (
       
-          <AppContainer />
+          <Maps />
      
     );
   }
@@ -254,4 +256,4 @@ const Base = createSwitchNavigator({
 
 
 
-const AppContainer = createAppContainer(Base)
+const AppContainer = createAppContainer(Base);
