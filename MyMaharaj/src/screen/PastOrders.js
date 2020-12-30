@@ -90,7 +90,7 @@ render(){
             <View style={{justifyContent:'center',flex:1}}>
                 <Image source ={require('../images/hat.png')} style ={{height:200 , width:200 , justifyContent:'center',alignSelf:'center'}}/>
                 <Text style={style.Company}>
-                MyMaharaj Inc.
+                MyMaharaj
             </Text>
             </View>
                 :

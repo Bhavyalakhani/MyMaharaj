@@ -74,7 +74,7 @@ render(){
                 
                 </TouchableOpacity>
             <Text style={style.Company}>
-                MyMaharaj Inc.
+                MyMaharaj
             </Text>
         </View>
 )}
